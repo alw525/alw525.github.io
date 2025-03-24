@@ -1,14 +1,14 @@
 # Welcome to Jekyll!
 #
-# This config file is meant for settings that affect your whole blog.
+# This config file is meant for settings that affect my whole blog.
 #
 # If you need help with YAML syntax, here are some quick references for you:
 # https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
 # https://learnxinyminutes.com/docs/yaml/
 
-title: Edit _config.yml to set your title!
-description: This is where the description of your site will go. You should change it by editing the _config.yml file. It can be as long as you like! Happy blogging... ❤
-github_username: jph00
+title: I'm not a BLANK mom, I'm a cool mom.
+description: This is where i document life as a phd student, univ admin, and mom of two.
+github_username: alw525
 
 # Email and twitter are optional:
 email:

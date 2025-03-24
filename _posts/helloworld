@@ -1,0 +1,49 @@
+# The Morning I Didn’t Cluster the Data
+
+The light in our townhome changes around 6:15 a.m. It’s not quite sunrise, but it’s enough to make out the outlines of backpacks by the door, toys abandoned mid-narrative, a dishwasher blinking “clean.” My husband is moving around quietly, prepping the kids for daycare across the street.
+
+By the time he zips up the last rain coat and closes the door behind him, I’ve got a cup of coffee and forty unclaimed minutes to think about my dissertation. This is when I do the real work.
+
+I’m an assistant dean for professional development, a mother of two toddlers, and a PhD student finishing a dissertation on career pathways for PhDs. It’s a project that blends data science, design thinking, and social science theory—a little bit of everything I’ve learned along the way, squeezed into a dataset that I’m trying to make speak.
+
+This morning, I’m supposed to be working on the first research question: building personality profiles using RIASEC data from a survey of PhD alumni. But my cursor is hovering over a line of code I haven’t written yet. It says something like: cluster(personality_scores).
+
+The question is simple. Should I?
+
+# When Clustering Feels Like Progress
+There’s a particular temptation in data work to cluster early and often. It feels productive. Grouping things gives us the illusion of control, of knowing. I’ve already calculated the personality scores. I’ve run the reliability checks. I know the structure holds. So why not see what patterns emerge? Why not get a jump on the next step?
+
+Because this isn’t the next step.
+
+My dissertation is built around a multistep modeling process:
+
+RQ1: Build personality profiles using RIASEC (Realistic, Investigative, Artistic, Social, Enterprising, Conventional).
+
+RQ2: Cluster those profiles with job history and satisfaction to identify career personas.
+
+RQ3: Predict who falls into which persona using supervised learning.
+
+Clustering in RQ1, before integrating job behavior and satisfaction, would feel like skipping ahead in a novel and then pretending you read the whole thing.
+
+The urge to cluster now isn’t grounded in research logic. It’s a productivity tic. And it risks a deeper methodological problem: circularity. If I cluster personality profiles in RQ1 and then use those clusters as inputs in RQ2 or RQ3, I’m no longer modeling independent steps. I’m reusing the same information under a different name—and potentially inflating my results in the process.
+
+# The Discipline of Waiting
+Instead, I opted for what felt, at first, like a quieter move: I stopped.
+
+I spent the rest of that morning doing what you’re supposed to do in RQ1. I calculated, validated, and described. I made sure the scores made sense across subgroups. I noted a few patterns that might matter later. But I left the clustering for another day—specifically, for RQ2, where it belongs.
+
+This wasn’t just about good research hygiene. It was about resisting the need to see conclusions before the data was ready to offer them. In a culture that rewards speed and visibility—especially in academia, especially in tech-adjacent fields—waiting feels counterintuitive. But clarity doesn’t always come faster with more modeling. Sometimes, it comes from letting the structure hold.
+
+# Doing Research in the Margins
+If you’re imagining all of this happening in some serene home office with whiteboards and ambient music, I should clarify: I do this from my kitchen table. The same table where we serve scrambled eggs and banana slices. The same table where I’ve wiped off stickers that mysteriously reappeared mid-Zoom call.
+
+I don’t have long hours to lose myself in the data. I have early mornings, the occasional naptime, and a life that doesn't pause for literature reviews. This means I’ve had to become ruthless about what actually matters. I don’t have the time—or the energy—for performative modeling. I need each step to count.
+
+That morning, not clustering wasn’t a failure to make progress. It was a decision to do the right work in the right order. To let the data speak when it’s ready, not when my calendar says it’s convenient.
+
+# What We Model, and Why
+In the broader scope of my dissertation, this decision will barely register. A few lines of code not written. A graph not generated. But in the life of the model—and maybe the life of the researcher—it matters.
+
+It’s easy to treat machine learning as a kind of oracle, always pointing to the next best thing. But models are built by humans. And humans bring assumptions. We bring schedules and moods and babies with colds and meetings that run long. And sometimes, we bring a need to see something in the data that isn’t quite there yet.
+
+That morning, I chose to trust the structure over the shortcut. I didn’t cluster. I got up, refilled my coffee, and opened the door when my husband came back from drop-off. The rest of the day rushed in. But I had kept the boundary. And in the slow-building world of dissertation work, that felt like progress.

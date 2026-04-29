@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV-to-Resume Conversion Tool - Abby Williams, PhD</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F7F4EF;
+      --charcoal: #1a1a1a;
+      --gray: #888;
+      --light-gray: #eeebe5;
+      --mustard: #C9973A;
+      --mustard-light: #f5ead6;
+      --card-bg: #ffffff;
+      --border: #e8e4dd;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--charcoal);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(247, 244, 239, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--gray);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--charcoal); }
+
+    .nav-resume {
+      background: var(--mustard);
+      color: #fff;
+      padding: 8px 22px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-resume:hover { opacity: 0.85; }
+
+    /* DETAIL HERO */
+    .detail-hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 110px 48px 32px;
+    }
+
+    .back-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+      display: inline-block;
+      margin-bottom: 28px;
+    }
+
+    .back-link:hover { color: var(--mustard); }
+
+    .detail-hero h1 {
+      font-size: clamp(30px, 4vw, 42px);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+      margin-bottom: 18px;
+    }
+
+    .detail-subtitle {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--gray);
+      line-height: 1.55;
+      max-width: 720px;
+      margin-bottom: 24px;
+    }
+
+    .detail-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .detail-tags .tag {
+      background: var(--mustard-light);
+      color: var(--mustard);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 100px;
+      letter-spacing: 0.01em;
+    }
+
+    /* SECTIONS */
+    .detail-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 48px;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mustard);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .detail-section p {
+      font-size: 16px;
+      color: #444;
+      line-height: 1.75;
+      margin-bottom: 18px;
+      max-width: 720px;
+    }
+
+    .method-step {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-top: 36px;
+      margin-bottom: 14px;
+      letter-spacing: -0.005em;
+    }
+
+    .method-step:first-of-type { margin-top: 8px; }
+
+    /* SCREENSHOTS */
+    figure {
+      margin: 24px 0 8px;
+    }
+
+    figure img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card-bg);
+    }
+
+    figcaption {
+      font-size: 13px;
+      color: var(--gray);
+      margin-top: 14px;
+      line-height: 1.65;
+      font-style: italic;
+      max-width: 720px;
+    }
+
+    /* OUTCOMES GRID */
+    .outcomes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .outcome-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 26px 22px;
+    }
+
+    .outcome-number {
+      font-size: 30px !important;
+      font-weight: 700;
+      color: var(--mustard) !important;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 8px !important;
+      max-width: none !important;
+    }
+
+    .outcome-label {
+      font-size: 13px !important;
+      color: var(--gray) !important;
+      line-height: 1.5 !important;
+      margin-bottom: 0 !important;
+      max-width: none !important;
+    }
+
+    /* CTA */
+    .cta-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 48px 80px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .cta-section p {
+      font-size: 17px;
+      color: var(--charcoal);
+      margin-bottom: 22px;
+      font-weight: 500;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: var(--mustard);
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .cta-button:hover { opacity: 0.85; }
+
+    /* FOOTER */
+    footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: var(--gray);
+      margin: 0;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 24px; }
+      .nav-links { gap: 20px; }
+      .detail-hero { padding: 96px 24px 24px; }
+      .detail-section { padding: 48px 24px; }
+      .cta-section { padding: 48px 24px 60px; }
+      .outcomes-grid { grid-template-columns: 1fr; }
+      footer { padding: 24px; flex-direction: column; gap: 6px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <ul class="nav-links">
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="index.html#publications">Publications</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <a href="resume.pdf" class="nav-resume" target="_blank">Download Resume</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="detail-hero">
+  <a href="index.html#projects" class="back-link">← Projects</a>
+  <h1>CV-to-Resume Conversion Tool</h1>
+  <p class="detail-subtitle">A two-stage NLP pipeline that compresses 5-10 page academic CVs into ATS-ready, one-page industry resumes.</p>
+  <div class="detail-tags">
+    <span class="tag">NLP</span>
+    <span class="tag">Streamlit</span>
+    <span class="tag">AWS</span>
+    <span class="tag">Heuristic Compression</span>
+    <span class="tag">ATS Optimization</span>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<section class="detail-section">
+  <p class="section-label">Context</p>
+  <h2 class="section-title">Overview</h2>
+  <p>PhD students applying outside academia face a structural translation problem. The 5-10 page academic CV is built to demonstrate scholarly depth: long publication lists, granular teaching histories, conference presentations, dissertation committees. Industry hiring managers and ATS parsers want the opposite, a one-page document foregrounding quantified impact, transferable skills, and standardized formatting.</p>
+  <p>The CV-to-Resume Conversion Tool, deployed inside the Meridian career intelligence platform, automates this translation. Students paste a CV or upload a file. The tool scores quality across six dimensions, surfaces strengths and gaps, then applies a priority-weighted compression strategy to produce a clean industry resume in seconds. Adopted by 5,000+ NYU GSAS students with no ongoing staff intervention required.</p>
+</section>
+
+<!-- METHODS -->
+<section class="detail-section">
+  <p class="section-label">Approach</p>
+  <h2 class="section-title">Methodology</h2>
+
+  <h3 class="method-step">Stage 1: Pre-conversion quality scoring</h3>
+  <p>Before any compression happens, the tool evaluates the input CV across six rubrics: length, action verb density, formatting cleanliness, contact information, quantifiable achievements, and keyword coverage. Each dimension returns a 0-100 score, surfaced alongside a qualitative strengths assessment. The user sees what is already working before changes are proposed, which builds trust in the conversion that follows.</p>
+  <figure>
+    <img src="cv-tool-score.png" alt="CV quality scoring interface showing 80 out of 100 overall, with breakdown across six dimensions including length, action verbs, formatting, contact info, quantifiable metrics, and keywords">
+    <figcaption>Multi-dimensional quality rubric returns a transparent score before any conversion happens. Length and action verb density are the most common gaps in academic CVs; quantifiable metrics and keyword coverage are typically high.</figcaption>
+  </figure>
+
+  <h3 class="method-step">Stage 2: Priority-weighted compression</h3>
+  <p>The conversion engine applies a hierarchy of retention rules. High-priority dimensions (length, content prioritization, education, skills, language, ATS optimization) drive the structural transformation. Medium priority handles publications and research, where the top two or three are kept and condensed into impact-forward bullets. Low priority handles teaching and service, retained only when directly relevant to the target role.</p>
+  <p>Academic vocabulary is translated into industry-standard action verbs (Led, Developed, Analyzed, Implemented). Tables, decorative formatting, and complex layouts are stripped for ATS parser compatibility. Standard headers replace academic conventions. The output targets 500-700 words, which fits cleanly on a single page in standard fonts.</p>
+  <figure>
+    <img src="cv-tool-breakdown.png" alt="Pre-conversion strengths assessment showing 100 out of 100 with bulleted feedback on CV content including word count, quantifiable achievements, research experience, and credential signals">
+    <figcaption>The strengths panel translates raw scores into actionable observations. PhD-specific signals such as research experience, publication count, and multiple advanced degrees are flagged as carry-forward assets rather than artifacts to remove.</figcaption>
+  </figure>
+</section>
+
+<!-- OUTCOMES -->
+<section class="detail-section">
+  <p class="section-label">Impact</p>
+  <h2 class="section-title">Outcomes</h2>
+  <div class="outcomes-grid">
+    <div class="outcome-card">
+      <p class="outcome-number">5,000+</p>
+      <p class="outcome-label">Students reached across NYU GSAS</p>
+    </div>
+    <div class="outcome-card">
+      <p class="outcome-number">200+</p>
+      <p class="outcome-label">Academic credential types covered in the translation library</p>
+    </div>
+    <div class="outcome-card">
+      <p class="outcome-number">0</p>
+      <p class="outcome-label">Ongoing staff hours required per conversion</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <p>Try the tool inside Meridian.</p>
+  <a href="https://gsasmeridian.com" class="cta-button" target="_blank">Open Meridian →</a>
+</section>
+
+<footer>
+  <p>Abby Williams, PhD - New York, NY</p>
+  <p>abbylwms@outlook.com</p>
+</footer>
+
+</body>
+</html>

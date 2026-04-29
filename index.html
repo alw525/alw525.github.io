@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abby Williams, PhD</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F7F4EF;
+      --charcoal: #1a1a1a;
+      --gray: #888;
+      --light-gray: #eeebe5;
+      --mustard: #C9973A;
+      --mustard-light: #f5ead6;
+      --card-bg: #ffffff;
+      --border: #e8e4dd;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--charcoal);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(247, 244, 239, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--gray);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--charcoal); }
+
+    .nav-resume {
+      background: var(--mustard);
+      color: #fff;
+      padding: 8px 22px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-resume:hover { opacity: 0.85; }
+
+    /* HERO */
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 120px 48px 60px;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 80px;
+      align-items: center;
+      min-height: auto;
+    }
+
+    .hero-text h1 {
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.04;
+      letter-spacing: -0.025em;
+      margin-bottom: 14px;
+      white-space: nowrap;
+    }
+
+    .hero-text h2 {
+      font-size: clamp(16px, 1.8vw, 20px);
+      font-weight: 400;
+      color: var(--gray);
+      line-height: 1.4;
+    }
+
+    .hero-image {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .photo-wrap {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--light-gray);
+      border: 1px solid var(--border);
+    }
+
+    .photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    /* SECTIONS */
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 48px;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mustard);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 48px;
+    }
+
+    .subsection-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--charcoal);
+      letter-spacing: 0.01em;
+      margin: 52px 0 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .subsection-title:first-of-type { margin-top: 0; }
+
+    .diss-note {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.7;
+      margin-bottom: 24px;
+      padding: 14px 18px;
+      background: var(--card-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    /* CARDS */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 26px;
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 6px 24px rgba(0,0,0,0.07);
+      transform: translateY(-2px);
+      border-color: #d8d4cd;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 18px;
+    }
+
+    .tag {
+      background: var(--mustard-light);
+      color: var(--mustard);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 100px;
+      letter-spacing: 0.01em;
+    }
+
+    .card-link {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--mustard);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: gap 0.15s;
+    }
+
+    .card-link:hover { gap: 7px; }
+    .card-link::after { content: '->'; font-size: 11px; }
+
+    /* PUBLICATIONS */
+    .pub-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pub-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      text-decoration: none;
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+    }
+
+    .pub-card:hover {
+      box-shadow: 0 6px 24px rgba(0,0,0,0.07);
+      transform: translateY(-2px);
+      border-color: #d8d4cd;
+    }
+
+    .pub-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .pub-logo-placeholder {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      background: var(--light-gray);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--gray);
+    }
+
+    .pub-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 3px;
+      line-height: 1.4;
+    }
+
+    .pub-meta {
+      font-size: 12px;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    /* CONTACT */
+    .contact-links {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 11px 22px;
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      text-decoration: none;
+      color: var(--charcoal);
+      font-size: 14px;
+      font-weight: 500;
+      background: var(--card-bg);
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .contact-link:hover {
+      border-color: var(--mustard);
+      color: var(--mustard);
+      background: var(--mustard-light);
+    }
+
+    /* FOOTER */
+    footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p { font-size: 12px; color: var(--gray); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 120px 24px 60px;
+        gap: 40px;
+        min-height: auto;
+      }
+      .hero-image { justify-content: flex-start; order: -1; }
+      .photo-wrap { width: 160px; height: 160px; }
+      .nav-inner { padding: 0 24px; }
+      .nav-links { gap: 20px; }
+      section { padding: 56px 24px; }
+      .card-grid { grid-template-columns: 1fr; }
+      footer { padding: 24px; flex-direction: column; gap: 6px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="resume.pdf" class="nav-resume" target="_blank">Download Resume</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <h1>Abby Williams, PhD</h1>
+    <h2>Data Scientist and Assistant Dean</h2>
+  </div>
+  <div class="hero-image">
+    <div class="photo-wrap">
+      <img src="headshot.png" alt="Abby Williams" onerror="this.parentElement.style.background='#eeebe5'">
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label">Work</p>
+  <h2 class="section-title">Projects</h2>
+
+  <p class="subsection-title">Shipped Products</p>
+  <div class="card-grid">
+
+    <div class="card">
+      <p class="card-title">Meridian</p>
+      <p class="card-desc">Career intelligence platform trained on 75,000+ cross-sectional records using ensemble ML and SHAP explainability. Serves 5,000+ active users with a 30% reduction in advising cycle time.</p>
+      <div class="card-tags">
+        <span class="tag">K-means</span><span class="tag">XGBoost</span><span class="tag">SHAP</span><span class="tag">AWS</span>
+      </div>
+      <a href="https://gsasmeridian.com" class="card-link" target="_blank">View Project</a>
+    </div>
+
+    <div class="card">
+      <p class="card-title">CV-to-Resume Conversion Tool</p>
+      <p class="card-desc">Translates 200+ academic credentials into industry-aligned skills. Adopted by 5,000+ students without requiring ongoing staff involvement.</p>
+      <div class="card-tags">
+        <span class="tag">NLP</span><span class="tag">Streamlit</span><span class="tag">AWS</span>
+      </div>
+      <a href="#" class="card-link">View Project</a>
+    </div>
+
+    <div class="card">
+      <p class="card-title">PhD Internships Database</p>
+      <p class="card-desc">Searchable career intelligence database with automated update pipelines. 10,000+ annual users across disciplines.</p>
+      <div class="card-tags">
+        <span class="tag">Streamlit</span><span class="tag">AWS</span>
+      </div>
+      <a href="#" class="card-link">View Project</a>
+    </div>
+
+    <div class="card">
+      <p class="card-title">Sentiment-Augmented Persona Validation</p>
+      <p class="card-desc">NLP pipeline validating career personas through sentiment analysis on 3,000+ open-text survey responses and 60+ interview transcripts.</p>
+      <div class="card-tags">
+        <span class="tag">TextBlob</span><span class="tag">VADER</span><span class="tag">NLP</span>
+      </div>
+      <a href="#" class="card-link">View Project</a>
+    </div>
+
+    <div class="card">
+      <p class="card-title">COVID-19 PhD Career Impact Study</p>
+      <p class="card-desc">Interrupted time series analysis measuring pandemic impact on doctoral career aspirations (n=329). Published in Journal of Experimental Political Science.</p>
+      <div class="card-tags">
+        <span class="tag">Python</span><span class="tag">Time Series</span><span class="tag">STATA</span>
+      </div>
+      <a href="https://doi.org/10.1017/XPS.2020.34" class="card-link" target="_blank">View Project</a>
+    </div>
+
+    <div class="card">
+      <p class="card-title">NSF/Mellon Career Pathways Dashboard</p>
+      <p class="card-desc">Integrated ML persona predictions with demographic and geospatial data. Informed $1.2M+ in program funding allocation decisions.</p>
+      <div class="card-tags">
+        <span class="tag">Tableau</span><span class="tag">ArcGIS</span><span class="tag">GCP</span>
+      </div>
+      <a href="#" class="card-link">View Project</a>
+    </div>
+
+  </div>
+
+  <p class="subsection-title">Dissertation Research</p>
+  <p class="diss-note">"Designing PhD Career Personas Using Cluster Analysis" - K-means, XGBoost, Random Forest, SHAP explainability, Streamlit, AWS. Full replication package on Harvard Dataverse.</p>
+  <div class="card-grid">
+
+    <div class="card">
+      <p class="card-title">RIASEC Composite Feature Engineering</p>
+      <p class="card-desc">Psychometric composites from Holland Code survey data as primary feature inputs for career persona classification across 75,000+ records.</p>
+      <div class="card-tags">
+        <span class="tag">Python</span><span class="tag">pandas</span><span class="tag">EFA</span><span class="tag">PCA</span>
+      </div>
+      <a href="https://github.com/alw525" class="card-link" target="_blank">View on GitHub</a>
+    </div>
+
+    <div class="card">
+      <p class="card-title">K-means Persona Clustering</p>
+      <p class="card-desc">Four validated PhD career personas using K-means clustering with silhouette scoring of 0.37 across 75,000+ cross-sectional survey records.</p>
+      <div class="card-tags">
+        <span class="tag">scikit-learn</span><span class="tag">Python</span><span class="tag">K-means</span>
+      </div>
+      <a href="https://github.com/alw525" class="card-link" target="_blank">View on GitHub</a>
+    </div>
+
+    <div class="card">
+      <p class="card-title">XGBoost Classification and Model Validation</p>
+      <p class="card-desc">3-class XGBoost classifier (F1=0.58, precision=0.60, recall=0.57) with Random Forest and logistic regression benchmarks and SHAP explainability.</p>
+      <div class="card-tags">
+        <span class="tag">XGBoost</span><span class="tag">scikit-learn</span><span class="tag">SHAP</span>
+      </div>
+      <a href="https://github.com/alw525" class="card-link" target="_blank">View on GitHub</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <p class="section-label">Research</p>
+  <h2 class="section-title">Publications and Presentations</h2>
+  <div class="pub-list">
+
+    <a href="https://www.cambridge.org/core" class="pub-card" target="_blank">
+      <img src="pub-cambridge-logo.png" alt="Cambridge University Press" class="pub-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="pub-logo-placeholder" style="display:none;">CUP</div>
+      <div>
+        <p class="pub-title">How to Thrive Beyond Academia</p>
+        <p class="pub-meta">Williams, A. and Williams, F. (2024). Public Humanities, Cambridge University Press.</p>
+      </div>
+    </a>
+
+    <a href="https://doi.org/10.1017/XPS.2020.34" class="pub-card" target="_blank">
+      <img src="pub-jeps-cover.png" alt="JEPS" class="pub-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="pub-logo-placeholder" style="display:none;">JEPS</div>
+      <div>
+        <p class="pub-title">Through Their Own Eyes: COVID-19 and PhD Students</p>
+        <p class="pub-meta">Haas, N., Gureghian, A., Jusino Diaz, C., and Williams, A. (2022). Journal of Experimental Political Science, 9(1).</p>
+      </div>
+    </a>
+
+    <a href="#" class="pub-card">
+      <img src="pub-mla-logo.png" alt="MLA" class="pub-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="pub-logo-placeholder" style="display:none;">MLA</div>
+      <div>
+        <p class="pub-title">Modern Language Association Annual Convention</p>
+        <p class="pub-meta">Presenter - PhD career development and program scaling.</p>
+      </div>
+    </a>
+
+    <a href="#" class="pub-card">
+      <img src="pub-chronicle-logo.png" alt="Chronicle of Higher Education" class="pub-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="pub-logo-placeholder" style="display:none;">CHE</div>
+      <div>
+        <p class="pub-title">Chronicle of Higher Education</p>
+        <p class="pub-meta">Panelist - PhD career pathways and alt-ac transitions (with Stacy Hartman).</p>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label">Connect</p>
+  <h2 class="section-title">Get in touch</h2>
+  <div class="contact-links">
+    <a href="mailto:abbylwms@outlook.com" class="contact-link">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      abbylwms@outlook.com
+    </a>
+    <a href="https://linkedin.com/in/abbywms" class="contact-link" target="_blank">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://github.com/alw525" class="contact-link" target="_blank">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      GitHub
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>Abby Williams, PhD - New York, NY</p>
+  <p>abbylwms@outlook.com</p>
+</footer>
+
+</body>
+</html>

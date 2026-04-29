@@ -108,6 +108,31 @@
       color: var(--gray);
       line-height: 1.4;
     }
+    .rotator {
+      display: inline-block;
+      height: 1.4em;
+      overflow: hidden;
+      vertical-align: bottom;
+    }
+
+    .rotator-track {
+      display: block;
+      animation: rotate-roles 16s ease-in-out infinite;
+    }
+
+    .rotator-track span {
+      display: block;
+      height: 1.4em;
+      line-height: 1.4em;
+    }
+
+    @keyframes rotate-roles {
+      0%, 20%   { transform: translateY(0); }
+      25%, 45%  { transform: translateY(-1.4em); }
+      50%, 70%  { transform: translateY(-2.8em); }
+      75%, 95%  { transform: translateY(-4.2em); }
+      100%     { transform: translateY(-5.6em); }
+    }
     .hero-tagline {
       font-size: 16px;
       font-weight: 400;
@@ -391,7 +416,17 @@
 <div class="hero">
   <div class="hero-text">
     <h1>Abby Williams, PhD</h1>
-    <h2>Data Scientist and Assistant Dean</h2>
+    <h2>
+  <span class="rotator">
+    <span class="rotator-track">
+      <span>Data Scientist</span>
+      <span>Assistant Dean</span>
+      <span>AI/ML Researcher</span>
+      <span>Occasional Linguist</span>
+      <span>Data Scientist</span>
+    </span>
+  </span>
+</h2>
     <p class="hero-tagline">I came to Python the same way I came to Mandarin; curious about structure and committed to fluency.</p>
   </div>
   <div class="hero-image">

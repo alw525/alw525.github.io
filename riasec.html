@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RIASEC Composite Feature Engineering - Abby Williams, PhD</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F7F4EF;
+      --charcoal: #1a1a1a;
+      --gray: #888;
+      --light-gray: #eeebe5;
+      --mustard: #C9973A;
+      --mustard-light: #f5ead6;
+      --card-bg: #ffffff;
+      --border: #e8e4dd;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--charcoal);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(247, 244, 239, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--gray);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--charcoal); }
+
+    .nav-resume {
+      background: var(--mustard);
+      color: #fff;
+      padding: 8px 22px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-resume:hover { opacity: 0.85; }
+
+    .detail-hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 110px 48px 32px;
+    }
+
+    .back-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+      display: inline-block;
+      margin-bottom: 14px;
+    }
+
+    .back-link:hover { color: var(--mustard); }
+
+    .breadcrumb {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mustard);
+      margin-bottom: 16px;
+    }
+
+    .detail-hero h1 {
+      font-size: clamp(30px, 4vw, 42px);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+      margin-bottom: 18px;
+    }
+
+    .detail-subtitle {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--gray);
+      line-height: 1.55;
+      max-width: 720px;
+      margin-bottom: 24px;
+    }
+
+    .detail-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .detail-tags .tag {
+      background: var(--mustard-light);
+      color: var(--mustard);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 100px;
+      letter-spacing: 0.01em;
+    }
+
+    .detail-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 48px;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mustard);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .detail-section p {
+      font-size: 16px;
+      color: #444;
+      line-height: 1.75;
+      margin-bottom: 18px;
+      max-width: 720px;
+    }
+
+    .method-step {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-top: 36px;
+      margin-bottom: 14px;
+      letter-spacing: -0.005em;
+    }
+
+    .method-step:first-of-type { margin-top: 8px; }
+
+    figure {
+      margin: 24px 0 8px;
+    }
+
+    figure img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card-bg);
+    }
+
+    figcaption {
+      font-size: 13px;
+      color: var(--gray);
+      margin-top: 14px;
+      line-height: 1.65;
+      font-style: italic;
+      max-width: 720px;
+    }
+
+    /* PREV/NEXT NAV */
+    .series-nav {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 48px 80px;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .series-card {
+      display: block;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      text-decoration: none;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .series-card:hover {
+      border-color: var(--mustard);
+      transform: translateY(-2px);
+    }
+
+    .series-card.prev { text-align: left; }
+    .series-card.next { text-align: right; }
+    .series-card.disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .series-direction {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 6px;
+    }
+
+    .series-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--charcoal);
+      letter-spacing: -0.005em;
+      line-height: 1.35;
+    }
+
+    footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: var(--gray);
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 24px; }
+      .nav-links { gap: 20px; }
+      .detail-hero { padding: 96px 24px 24px; }
+      .detail-section { padding: 48px 24px; }
+      .series-nav { padding: 48px 24px 60px; grid-template-columns: 1fr; }
+      .series-card.next { text-align: left; }
+      footer { padding: 24px; flex-direction: column; gap: 6px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <ul class="nav-links">
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="index.html#publications">Publications</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <a href="resume.pdf" class="nav-resume" target="_blank">Download Resume</a>
+  </div>
+</nav>
+
+<div class="detail-hero">
+  <a href="index.html#projects" class="back-link">← Projects</a>
+  <p class="breadcrumb">Dissertation - Designing PhD Personas - Part 1 of 3</p>
+  <h1>RIASEC Composite Feature Engineering</h1>
+  <p class="detail-subtitle">Constructing psychometric composite scores from multi-year alumni survey data, harmonized across instruments and validated with EFA and PCA.</p>
+  <div class="detail-tags">
+    <span class="tag">Python</span>
+    <span class="tag">pandas</span>
+    <span class="tag">EFA</span>
+    <span class="tag">PCA</span>
+    <span class="tag">Psychometrics</span>
+  </div>
+</div>
+
+<section class="detail-section">
+  <p class="section-label">Research Question</p>
+  <h2 class="section-title">Overview</h2>
+  <p>The first research question of the dissertation asks how RIASEC-based composite scores can be reliably constructed from multi-year survey data collected across heterogeneous instruments. The motivation is practical. Career advising in PhD programs increasingly relies on psychometric instruments to surface vocational orientation, but the underlying data is rarely clean. Surveys evolve across cohorts, item wordings shift, response scales change, and missingness is systematic rather than random. Building a usable feature set requires harmonization, not just averaging.</p>
+  <p>The study addresses this by treating composite construction as a measurement problem first and a feature engineering problem second. Each RIASEC dimension, along with allied non-RIASEC constructs such as leadership, persistence, and communication, is built from a vetted set of items, validated against latent-factor structure, and standardized into z-scores. The resulting feature space serves as the input to the persona clustering and classification work in subsequent chapters.</p>
+</section>
+
+<section class="detail-section">
+  <p class="section-label">Approach</p>
+  <h2 class="section-title">Methodology</h2>
+
+  <h3 class="method-step">Harmonization across survey years</h3>
+  <p>Alumni records spanning multiple cohorts use overlapping but non-identical survey instruments. The study employs branching logic to map variant items to canonical constructs rather than relying on heuristic substitution. Where item wording diverges meaningfully, items are excluded rather than coerced into a shared scale; where prior roles or career stages are missing, branching imputation infers reasonable values from adjacent fields rather than dropping cases. The result is a longitudinal dataset preserved in its full heterogeneity, with documentation of every transformation.</p>
+
+  <figure>
+    <img src="diss-methodology-flowchart.png" alt="Dissertation methodology flowchart showing alumni data feeding into four parallel steps: personality indexing producing a RIASEC profile, persona development via clustering, predictive algorithm via prediction model, and algorithm testing on student data, with a validation and feedback loop">
+    <figcaption>Methodology flowchart for the full dissertation arc. Step 1, the focus of this page, transforms raw alumni data into a validated RIASEC profile. Steps 2 through 4 are documented in the subsequent project pages.</figcaption>
+  </figure>
+
+  <h3 class="method-step">Composite construction with profile-based separation</h3>
+  <p>Rather than collapsing personality and behavioral dimensions into a single index, the study maintains separate composite scores for each construct. Leadership, persistence, communication, ethics, and the six RIASEC dimensions are scored independently and retained as distinct features throughout the pipeline. This profile-based approach preserves interpretability for downstream advising applications, where a single index would obscure the very distinctions advisors need to surface.</p>
+
+  <h3 class="method-step">Validation via exploratory and principal components analysis</h3>
+  <p>Each composite is validated against latent factor structure using exploratory factor analysis and principal components analysis. Items that fail to load on their hypothesized factor are flagged and reviewed; composites that fail to demonstrate adequate internal consistency are reconstructed. The validation step is treated as a methodological checkpoint, not a formality. The downstream clustering and classification depend on the integrity of these inputs, and any circularity introduced at this stage propagates through the rest of the analysis.</p>
+</section>
+
+<section class="detail-section">
+  <p class="section-label">Outcome</p>
+  <h2 class="section-title">Result</h2>
+  <p>The harmonized feature set produced from this stage forms the input to the persona clustering analysis in Part 2. Composite scores are standardized as z-scores to enable cross-construct comparison, with each dimension retained separately to preserve interpretability. The feature engineering documentation accompanies the dissertation as a methodological appendix, allowing replication on future cohort data without re-derivation of the harmonization rules.</p>
+</section>
+
+<nav class="series-nav">
+  <a class="series-card disabled">
+    <p class="series-direction">← Previous</p>
+    <p class="series-title">Start of series</p>
+  </a>
+  <a href="kmeans.html" class="series-card next">
+    <p class="series-direction">Next - Part 2 →</p>
+    <p class="series-title">K-means Persona Clustering</p>
+  </a>
+</nav>
+
+<footer>
+  <p>Abby Williams, PhD - New York, NY</p>
+  <p>abbylwms@outlook.com</p>
+</footer>
+
+</body>
+</html>

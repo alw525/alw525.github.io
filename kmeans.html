@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K-means Persona Clustering - Abby Williams, PhD</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F7F4EF;
+      --charcoal: #1a1a1a;
+      --gray: #888;
+      --light-gray: #eeebe5;
+      --mustard: #C9973A;
+      --mustard-light: #f5ead6;
+      --card-bg: #ffffff;
+      --border: #e8e4dd;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--charcoal);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(247, 244, 239, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--gray);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--charcoal); }
+
+    .nav-resume {
+      background: var(--mustard);
+      color: #fff;
+      padding: 8px 22px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-resume:hover { opacity: 0.85; }
+
+    .detail-hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 110px 48px 32px;
+    }
+
+    .back-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+      display: inline-block;
+      margin-bottom: 14px;
+    }
+
+    .back-link:hover { color: var(--mustard); }
+
+    .breadcrumb {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mustard);
+      margin-bottom: 16px;
+    }
+
+    .detail-hero h1 {
+      font-size: clamp(30px, 4vw, 42px);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+      margin-bottom: 18px;
+    }
+
+    .detail-subtitle {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--gray);
+      line-height: 1.55;
+      max-width: 720px;
+      margin-bottom: 24px;
+    }
+
+    .detail-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .detail-tags .tag {
+      background: var(--mustard-light);
+      color: var(--mustard);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 100px;
+      letter-spacing: 0.01em;
+    }
+
+    .detail-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 48px;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mustard);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .detail-section p {
+      font-size: 16px;
+      color: #444;
+      line-height: 1.75;
+      margin-bottom: 18px;
+      max-width: 720px;
+    }
+
+    .method-step {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-top: 36px;
+      margin-bottom: 14px;
+      letter-spacing: -0.005em;
+    }
+
+    .method-step:first-of-type { margin-top: 8px; }
+
+    figure {
+      margin: 24px 0 8px;
+    }
+
+    figure img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card-bg);
+    }
+
+    figcaption {
+      font-size: 13px;
+      color: var(--gray);
+      margin-top: 14px;
+      line-height: 1.65;
+      font-style: italic;
+      max-width: 720px;
+    }
+
+    .series-nav {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 48px 80px;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .series-card {
+      display: block;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      text-decoration: none;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .series-card:hover {
+      border-color: var(--mustard);
+      transform: translateY(-2px);
+    }
+
+    .series-card.prev { text-align: left; }
+    .series-card.next { text-align: right; }
+
+    .series-direction {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 6px;
+    }
+
+    .series-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--charcoal);
+      letter-spacing: -0.005em;
+      line-height: 1.35;
+    }
+
+    footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: var(--gray);
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 24px; }
+      .nav-links { gap: 20px; }
+      .detail-hero { padding: 96px 24px 24px; }
+      .detail-section { padding: 48px 24px; }
+      .series-nav { padding: 48px 24px 60px; grid-template-columns: 1fr; }
+      .series-card.next { text-align: left; }
+      footer { padding: 24px; flex-direction: column; gap: 6px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <ul class="nav-links">
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="index.html#publications">Publications</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <a href="resume.pdf" class="nav-resume" target="_blank">Download Resume</a>
+  </div>
+</nav>
+
+<div class="detail-hero">
+  <a href="index.html#projects" class="back-link">← Projects</a>
+  <p class="breadcrumb">Dissertation - Designing PhD Personas - Part 2 of 3</p>
+  <h1>K-means Persona Clustering</h1>
+  <p class="detail-subtitle">Identifying four empirically-grounded career personas from harmonized RIASEC and motivation features, with sentiment-augmented validation.</p>
+  <div class="detail-tags">
+    <span class="tag">scikit-learn</span>
+    <span class="tag">K-means</span>
+    <span class="tag">UMAP</span>
+    <span class="tag">TextBlob</span>
+    <span class="tag">VADER</span>
+  </div>
+</div>
+
+<section class="detail-section">
+  <p class="section-label">Research Question</p>
+  <h2 class="section-title">Overview</h2>
+  <p>The second research question asks what career personas emerge when alumni are clustered on the harmonized feature set developed in Part 1. The framing matters. The study does not seek to confirm a pre-specified taxonomy of career types or to map alumni onto an existing instrument's categories. It treats persona structure as an empirical question, allowing the data to surface natural groupings that reflect how PhD careers actually develop.</p>
+  <p>Four personas emerge with stable structure: a high-engagement, high-motivation group representing roughly a third of the sample; a structurally engaged but motivationally disengaged majority; a small group with uniformly low scores across all dimensions; and a group whose vocational orientation remains intact despite low training satisfaction. These groupings are theoretically meaningful, empirically separable, and externally validated through sentiment analysis on free-response data.</p>
+  <figure>
+    <img src="diss-persona-cards.png" alt="Four persona cards showing Cluster 0 (14.6 percent, lowest training satisfaction), Cluster 1 (31 percent, highest motivation), Cluster 2 (48.8 percent, largest group, low motivation), and Cluster 3 (5.6 percent, smallest, uniformly low across all dimensions)">
+    <figcaption>The four personas surfaced by the clustering analysis. Cluster size and within-cluster characteristics surface meaningful behavioral patterns rather than statistical artifacts. The composition is stable across alternative random seeds and feature subsets.</figcaption>
+  </figure>
+</section>
+
+<section class="detail-section">
+  <p class="section-label">Approach</p>
+  <h2 class="section-title">Methodology</h2>
+
+  <h3 class="method-step">Selecting k via elbow and silhouette analysis</h3>
+  <p>Cluster count selection balances within-cluster compactness against between-cluster separation. The elbow plot identifies diminishing returns in inertia reduction beyond k=4, while silhouette analysis peaks at k=2 with a meaningful local stability point at k=4. The study selects k=4 over the silhouette peak because the two-cluster solution collapses theoretically distinct groups (notably separating motivationally-engaged students from those whose engagement persists despite dissatisfaction). The choice trades a small loss in silhouette score for substantial gains in interpretive resolution, a tradeoff documented transparently in the methods.</p>
+  <figure>
+    <img src="diss-elbow-silhouette.png" alt="Two-panel chart showing elbow method with selected k equals 4 marked at the diminishing returns point, and silhouette scores showing peak at k equals 2 with selected k equals 4">
+    <figcaption>Elbow and silhouette evaluation across k from 2 to 9. The selected k=4 sits at the elbow inflection and trades a peak silhouette at k=2 for greater interpretive yield in the resulting persona structure.</figcaption>
+  </figure>
+
+  <h3 class="method-step">UMAP projection for cluster visualization</h3>
+  <p>UMAP projection reveals coherent cluster structure in the high-dimensional feature space. The four personas occupy distinguishable regions of the embedding, with Cluster 1 forming the densest core, Clusters 0 and 2 occupying overlapping but separable territory, and Cluster 3 dispersing across the periphery as expected for the smallest and most heterogeneous group. The projection serves as a visual robustness check rather than a primary analytic tool, confirming that the K-means partitioning is not an artifact of dimensional pathology.</p>
+  <figure>
+    <img src="diss-umap-projection.png" alt="UMAP projection scatterplot showing four colored clusters in two-dimensional persona gradient by engagement and alignment space, with Cluster 1 in orange forming the densest core">
+    <figcaption>UMAP projection of the clustered feature space onto two dimensions labeled persona gradient and engagement and alignment. Visual separation supports the K-means partition as a genuine structural feature of the data.</figcaption>
+  </figure>
+
+  <h3 class="method-step">Sentiment-augmented persona validation</h3>
+  <p>Cluster membership is externally validated against free-response text data using TextBlob and VADER polarity scoring. The hypothesis is straightforward: if the four personas reflect genuine differences in career orientation, those differences should manifest in the affective tone of how alumni describe their experiences. Both scoring methods produce convergent results, with Cluster 1 showing the most positive polarity and Cluster 3 the lowest, confirming that the clustering structure aligns with independently-measured affective signal.</p>
+  <figure>
+    <img src="sent-polarity-comparison.png" alt="Bar chart comparing TextBlob and VADER mean sentiment polarity across the four clusters and an unclear category, with both methods showing highest polarity in Cluster 1 and lowest in the unclear group">
+    <figcaption>Convergent sentiment validation across two scoring methods. The agreement between TextBlob and VADER reduces the risk of method-specific artifacts and strengthens the external validity of the persona structure.</figcaption>
+  </figure>
+</section>
+
+<section class="detail-section">
+  <p class="section-label">Outcome</p>
+  <h2 class="section-title">Result</h2>
+  <p>The four-persona structure produced in this stage serves as the labeled outcome for the supervised classification work in Part 3. Cluster assignments are retained at the alumnus level, allowing prediction models to be trained on the full feature set with persona membership as the target variable. The robustness checks documented here, including sentiment validation and visual confirmation via UMAP, anchor the downstream classification work in a defensible empirical foundation.</p>
+</section>
+
+<nav class="series-nav">
+  <a href="riasec.html" class="series-card prev">
+    <p class="series-direction">← Previous - Part 1</p>
+    <p class="series-title">RIASEC Composite Feature Engineering</p>
+  </a>
+  <a href="xgboost.html" class="series-card next">
+    <p class="series-direction">Next - Part 3 →</p>
+    <p class="series-title">XGBoost Classification and Validation</p>
+  </a>
+</nav>
+
+<footer>
+  <p>Abby Williams, PhD - New York, NY</p>
+  <p>abbylwms@outlook.com</p>
+</footer>
+
+</body>
+</html>

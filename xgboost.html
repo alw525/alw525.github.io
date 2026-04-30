@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XGBoost Classification and Validation - Abby Williams, PhD</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F7F4EF;
+      --charcoal: #1a1a1a;
+      --gray: #888;
+      --light-gray: #eeebe5;
+      --mustard: #C9973A;
+      --mustard-light: #f5ead6;
+      --card-bg: #ffffff;
+      --border: #e8e4dd;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--charcoal);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(247, 244, 239, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--gray);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--charcoal); }
+
+    .nav-resume {
+      background: var(--mustard);
+      color: #fff;
+      padding: 8px 22px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-resume:hover { opacity: 0.85; }
+
+    .detail-hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 110px 48px 32px;
+    }
+
+    .back-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+      display: inline-block;
+      margin-bottom: 14px;
+    }
+
+    .back-link:hover { color: var(--mustard); }
+
+    .breadcrumb {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mustard);
+      margin-bottom: 16px;
+    }
+
+    .detail-hero h1 {
+      font-size: clamp(30px, 4vw, 42px);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+      margin-bottom: 18px;
+    }
+
+    .detail-subtitle {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--gray);
+      line-height: 1.55;
+      max-width: 720px;
+      margin-bottom: 24px;
+    }
+
+    .detail-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .detail-tags .tag {
+      background: var(--mustard-light);
+      color: var(--mustard);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 100px;
+      letter-spacing: 0.01em;
+    }
+
+    .detail-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 48px;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mustard);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .detail-section p {
+      font-size: 16px;
+      color: #444;
+      line-height: 1.75;
+      margin-bottom: 18px;
+      max-width: 720px;
+    }
+
+    .method-step {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-top: 36px;
+      margin-bottom: 14px;
+      letter-spacing: -0.005em;
+    }
+
+    .method-step:first-of-type { margin-top: 8px; }
+
+    figure {
+      margin: 24px 0 8px;
+    }
+
+    figure img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card-bg);
+    }
+
+    figcaption {
+      font-size: 13px;
+      color: var(--gray);
+      margin-top: 14px;
+      line-height: 1.65;
+      font-style: italic;
+      max-width: 720px;
+    }
+
+    .series-nav {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 48px 80px;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .series-card {
+      display: block;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      text-decoration: none;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .series-card:hover {
+      border-color: var(--mustard);
+      transform: translateY(-2px);
+    }
+
+    .series-card.prev { text-align: left; }
+    .series-card.next { text-align: right; }
+    .series-card.disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .series-direction {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 6px;
+    }
+
+    .series-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--charcoal);
+      letter-spacing: -0.005em;
+      line-height: 1.35;
+    }
+
+    footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: var(--gray);
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 24px; }
+      .nav-links { gap: 20px; }
+      .detail-hero { padding: 96px 24px 24px; }
+      .detail-section { padding: 48px 24px; }
+      .series-nav { padding: 48px 24px 60px; grid-template-columns: 1fr; }
+      .series-card.next { text-align: left; }
+      footer { padding: 24px; flex-direction: column; gap: 6px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <ul class="nav-links">
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="index.html#publications">Publications</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <a href="resume.pdf" class="nav-resume" target="_blank">Download Resume</a>
+  </div>
+</nav>
+
+<div class="detail-hero">
+  <a href="index.html#projects" class="back-link">← Projects</a>
+  <p class="breadcrumb">Dissertation - Designing PhD Personas - Part 3 of 3</p>
+  <h1>XGBoost Classification and Validation</h1>
+  <p class="detail-subtitle">Predicting persona membership for new student profiles, benchmarked across three classification schemas with SHAP-based explainability for advising deployment.</p>
+  <div class="detail-tags">
+    <span class="tag">XGBoost</span>
+    <span class="tag">Random Forest</span>
+    <span class="tag">Logistic Regression</span>
+    <span class="tag">SHAP</span>
+    <span class="tag">scikit-learn</span>
+  </div>
+</div>
+
+<section class="detail-section">
+  <p class="section-label">Research Question</p>
+  <h2 class="section-title">Overview</h2>
+  <p>The third research question asks whether persona membership can be predicted for new students from the same feature space used to derive the personas in Part 2. The framing is consequential. The study extends an empirically-grounded persona structure into a deployable classifier, allowing the personas to function as a guidance tool rather than a descriptive artifact. To deploy responsibly, the classifier must do more than predict accurately. It must explain its predictions in terms that career advisors can interpret, contextualize for individual students, and contest where appropriate.</p>
+  <p>Multiple algorithms are benchmarked across three classification schemas (4-class matching the original cluster solution, 3-class collapsing the smallest group into its theoretically nearest neighbor, and binary distinguishing high-engagement from all others). XGBoost on the 3-class schema produces the best balance of accuracy and macro F1 score, and SHAP analysis reveals which features drive each prediction.</p>
+</section>
+
+<section class="detail-section">
+  <p class="section-label">Approach</p>
+  <h2 class="section-title">Methodology</h2>
+
+  <h3 class="method-step">Multi-schema benchmarking across three algorithms</h3>
+  <p>The study benchmarks XGBoost, Random Forest, and logistic regression across three classification schemas to surface the genuine performance frontier rather than overfitting to a single configuration. The 4-class schema mirrors the original cluster structure but suffers from severe class imbalance (Cluster 3 represents only 5.6 percent of the sample). The binary schema collapses too much signal, treating all non-engaged groups as equivalent. The 3-class schema preserves the most theoretically meaningful distinctions while producing tractable class sizes. Across schemas, XGBoost consistently outperforms tree-based and linear baselines on macro F1, with the 3-class XGBoost configuration producing the best overall performance at accuracy 0.60 and macro F1 0.58.</p>
+  <figure>
+    <img src="diss-model-performance.png" alt="Scatterplot of model performance showing accuracy on x-axis and macro F1 on y-axis, with XGBoost in three classification schemas, Random Forest, and Logistic Regression marked, with 3-class XGBoost annotated as best overall performance">
+    <figcaption>Model performance across three algorithms and three classification schemas. The 3-class XGBoost configuration produces the best balance of accuracy and macro F1, while the binary schema reaches higher absolute scores by predicting an easier task. Annotations document failure modes for the rejected configurations.</figcaption>
+  </figure>
+
+  <h3 class="method-step">SHAP analysis for advising-grade explainability</h3>
+  <p>For deployment in a career advising context, predictive accuracy is necessary but not sufficient. The classifier must explain why a student was assigned to a given persona in terms an advisor can engage with. SHAP analysis surfaces the features driving each prediction and makes the model's reasoning legible. For the central cluster representing the largest population segment, the most influential features cluster around prep_ethics_z, prep_research_use_z, and prep_comm_small_z, surfacing dimensions that align with how advisors already discuss career fit with students. The model's reasoning maps onto the advising vocabulary, not against it.</p>
+  <figure>
+    <img src="diss-shap-importance.png" alt="Horizontal bar chart of SHAP feature importance for Cluster 2, with prep_ethics_z showing highest mean absolute SHAP value, followed by prep_research_use_z and prep_comm_small_z">
+    <figcaption>SHAP feature importance for the largest persona cluster, ranked by mean absolute SHAP value. The top features map onto established constructs in PhD career development, supporting the use of the model as an advising aid rather than an opaque classification system.</figcaption>
+  </figure>
+</section>
+
+<section class="detail-section">
+  <p class="section-label">Outcome</p>
+  <h2 class="section-title">Result</h2>
+  <p>The 3-class XGBoost classifier serves as the production model deployed inside the Meridian career intelligence platform. SHAP outputs are surfaced to students alongside their persona assignment, providing the explainability layer that distinguishes a coaching tool from a black-box recommender. The classifier's performance characteristics, including its known failure modes documented in the benchmarking analysis, inform the way advisors interpret and contextualize Meridian outputs in their work with individual students. The full benchmarking dataset and evaluation code accompany the dissertation as a reproducibility appendix.</p>
+</section>
+
+<nav class="series-nav">
+  <a href="kmeans.html" class="series-card prev">
+    <p class="series-direction">← Previous - Part 2</p>
+    <p class="series-title">K-means Persona Clustering</p>
+  </a>
+  <a class="series-card disabled next">
+    <p class="series-direction">Next →</p>
+    <p class="series-title">End of series</p>
+  </a>
+</nav>
+
+<footer>
+  <p>Abby Williams, PhD - New York, NY</p>
+  <p>abbylwms@outlook.com</p>
+</footer>
+
+</body>
+</html>

@@ -283,15 +283,24 @@
       color: var(--gray);
       margin: 0;
     }
-
-    /* RESPONSIVE */
+/* RESPONSIVE */
     @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 120px 24px 30px;
+        gap: 40px;
+        min-height: auto;
+      }
+      .hero-image { justify-content: flex-start; order: -1; }
+      .photo-wrap { width: 160px; height: 160px; }
       .nav-inner { padding: 0 24px; }
-      .nav-links { gap: 20px; }
-      .detail-hero { padding: 96px 24px 24px; }
-      .detail-section { padding: 48px 24px; }
-      .cta-section { padding: 48px 24px 60px; }
-      .outcomes-grid { grid-template-columns: 1fr; }
+      .nav-resume {
+        padding: 7px 14px;
+        font-size: 12px;
+      }
+      .nav-links { gap: 16px; }
+      section { padding: 56px 24px; }
+      .card-grid { grid-template-columns: 1fr; }
       footer { padding: 24px; flex-direction: column; gap: 6px; text-align: center; }
     }
   </style>
